@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version "2.0.4"
+}
+
+group 'io.wisoft'
+version '2018.29.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+mainClassName = "io.wisoft.Application"
+
+ext {
+    slf4jVersion = '1.7.25'
+    jettyVersion = '9.4.8.v20180619'
+    jerseyVersion = '2.27'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile "com.sun.xml.bind:jaxb-core:2.3.0"
+    compile "com.sun.xml.bind:jaxb-impl:2.3.0"
+
+    compile "com.fasterxml.jackson.core:jackson-annotations:2.8.7"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.8.7"
+
+    compile "javax.activation:activation:1.1.1"
+    compile "javax.xml.bind:jaxb-api:2.3.0"
+
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.slf4j:slf4j-simple:$slf4jVersion"
+
+    compile "org.eclipse.jetty:jetty-server:$jettyVersion"
+    compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+
+    compile "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
+    compile "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-jetty-http:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet-core:$jerseyVersion"
+    runtime "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+    compile 'org.codehaus.jackson:jackson-mapper-lgpl:0.9.8'
+    compile 'org.json:json:20180130'
+
+    compile group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+}
+
+

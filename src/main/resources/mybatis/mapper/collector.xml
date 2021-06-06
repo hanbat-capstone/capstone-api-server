@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wisoft.dao.CollectorMapperDao">
+
+    <resultMap type="collector" id="collectorResultMap">
+        <result column="collector_no" property="collectorNo"/>
+        <result column="panel_no"  property="panelNo"/>
+        <result column="sensor_irradiation"    property="sensorIrradiation"/>
+        <result column="panel_irradiation" property="panelIrradiation"/>
+        <result column="temperature" property="temperature"/>
+        <result column="time" property="time"/>
+        <result column="account_no" property="accountNo"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="collectorResultMap">
+        SELECT a.name
+             , p.panel_no
+             , sensor_irradiation
+             , panel_irradiation
+             , temperature
+             , time
+             , p.location
+          FROM collector c, panel p, account a
+         WHERE c.panel_no = p.panel_no AND p.account_no = a.account_no ORDER BY a.name
+    </select>
+
+    <select id="selectCollectorsWithPanelNo" resultMap="collectorResultMap">
+        SELECT a.name
+             , p.panel_no
+             , sensor_irradiation
+             , panel_irradiation
+             , temperature
+             , time
+             , p.location
+          FROM collector c, panel p, account a
+         WHERE c.panel_no = p.panel_no AND p.panel_no = a.account_no AND p.panel_no=#{panelNo} ORDER BY a.name
+    </select>
+
+    <select id="selectCollectorsWithAccountNo" parameterType="Long" resultMap="collectorResultMap">
+        SELECT account_no
+             , p.panel_no
+             , panel_id
+             , sensor_irradiation
+             , panel_irradiation
+             , temperature
+             , time
+          FROM collector c, panel p
+         WHERE c.panel_no = p.panel_no AND account_no=#{accountNo} ORDER BY c.panel_no
+    </select>
+
+    <select id="selectCollectorsWithAccountNoAndPanelNo" parameterType="hashmap" resultMap="collectorResultMap">
+        SELECT account_no
+             , p.panel_no
+             , panel_id
+             , sensor_irradiation
+             , panel_irradiation
+             , temperature
+             , time
+          FROM collector c, panel p
+         WHERE c.panel_no = p.panel_no AND account_no=#{accountNo} AND p.panel_no=#{panelNo} ORDER BY time
+    </select>
+
+
+    <select id="selectLatestCollectorsWithAccountNoAndPanelNo" parameterType="Long" resultMap="collectorResultMap">
+                SELECT account_no
+             , p.panel_no
+             , panel_id
+             , sensor_irradiation
+             , panel_irradiation
+             , temperature
+             , time
+          FROM collector c, panel p
+         WHERE c.panel_no = p.panel_no AND account_no=#{accountNo} AND p.panel_no=#{panelNo} ORDER BY time LIMIT 5
+    </select>
+
+    <insert id="insertCollector" parameterType="Collector">
+        INSERT INTO collector(panel_no, sensor_irradiation, panel_irradiation, temperature)
+        VALUES (#{panelNo}, #{sensorIrradiation}, #{panelIrradiation}, #{temperature})
+    </insert>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wisoft.dao.PanelHistoryMapperDao">
+
+    <resultMap type="panelHistory" id="panelHistoryResultMap">
+        <result column="name" property="name"/>
+        <result column="history_no"  property="historyNo"/>
+        <result column="panel_no"    property="panelNo"/>
+        <result column="time" property="time"/>
+        <result column="expect_current" property="expectCurrent"/>
+        <result column="actual_current" property="actualCurrent"/>
+        <result column="location" property="location"/>
+    </resultMap>
+
+    <select id="selectsPanelHistory" resultMap="panelHistoryResultMap">
+        SELECT a.name
+             , p.panel_no
+             , time
+             , expect_current
+             , actual_current
+             , p.location
+          FROM panel_history h, panel p, account a
+         WHERE p.panel_no = h.panel_no AND p.account_no = a.account_no
+      ORDER BY a.name
+    </select>
+
+    <select id="selectPanelHistory" parameterType="Long" resultMap="panelHistoryResultMap">
+        SELECT a.name
+             , p.panel_no
+             , time
+             , expect_current
+             , actual_current
+             , p.location
+          FROM panel_history h, panel p, account a
+         WHERE p.panel_no = h.panel_no AND p.account_no = a.account_no AND  h.panel_no = #{historyNo}
+      ORDER BY a.name
+    </select>
+
+
+    <select id="selectCount" parameterType="Long" resultType="int">
+        SELECT count(*)
+          FROM panel_history
+         WHERE panel_no = #{panelNo}
+    </select>
+    <insert id="insertPanelHistory" parameterType="panelHistory">
+        INSERT INTO panel_history(panel_no, expect_current, actual_current)
+        VALUES (#{panelNo}, #{expectCurrent}, #{actualCurrent})
+    </insert>
+
+    <!--<update id="updatePanelHistory" parameterType="panelHistory">-->
+        <!--UPDATE panel_history-->
+        <!--SET  panel_no = #{panelNo},-->
+        <!--expect_current = #{expectCurrent},-->
+        <!--actual_current = #{actualCurrent}-->
+        <!--WHERE history_no = #{historyNo};-->
+    <!--</update>-->
+
+    <delete id="deletePanelHistory" parameterType="Long">
+        DELETE FROM panel_history
+        WHERE history_no = #{historyNo};
+    </delete>
+</mapper>

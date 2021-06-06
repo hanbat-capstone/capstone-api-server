@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wisoft.dao.AccountMapperDao">
+
+    <resultMap type="account" id="accountResultMap">
+        <result column="account_id"  property="accountId"/>
+        <result column="name"    property="name"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="account_no" property="accountNo"/>
+        <result column="location" property="location"/>
+    </resultMap>
+
+    <select id="selectAccounts" resultMap="accountResultMap">
+        SELECT account_id
+             , name
+             , email
+             , phone_number
+             , account_no
+             , password
+          FROM account
+    </select>
+
+    <select id="selectAccount" parameterType="int" resultMap="accountResultMap">
+        SELECT account_id
+             , name
+             , email
+             , phone_number
+             , account_no
+             , password
+          FROM account
+         WHERE account_no = #{accountNo}
+    </select>
+
+    <select id="selectAccountInformation" parameterType="Long" resultMap="accountResultMap">
+        SELECT DISTINCT name
+             , phone_number
+             , location
+          FROM collector c, account a, panel p
+         WHERE c.panel_no = p.panel_no AND p.account_no = a.account_no AND p.panel_no = #{panelNo}
+    </select>
+
+    <insert id="insertAccount" parameterType="account">
+        INSERT INTO account(account_id, name, email, password, phone_number)
+        VALUES (#{accountId}, #{name}, #{email}, #{password}, #{phoneNumber});
+    </insert>
+
+    <update id="updateAccount" parameterType="account">
+        UPDATE account
+        SET account_id = #{accountId},
+        name = #{name},
+        email = #{email},
+        password = #{password},
+        phone_number = #{phoneNumber}
+        WHERE account_no = #{accountNo};
+    </update>
+
+    <delete id="deleteAccount" parameterType="account">
+        DELETE FROM account
+        WHERE account_no = #{accountNo};
+    </delete>
+</mapper>

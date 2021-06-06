@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="./env/dbms.properties"/>
+
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <!--<typeAlias type="spms.vo.Project" alias="project"/>-->
+        <typeAlias type="io.wisoft.vo.Account" alias="account"/>
+        <typeAlias type="io.wisoft.vo.Panel" alias="panel"/>
+        <typeAlias type="io.wisoft.vo.Collector" alias="collector"/>
+        <typeAlias type="io.wisoft.vo.PanelHistory" alias="panelHistory"/>
+        <typeAlias type="io.wisoft.vo.Damage" alias="damage"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="./mybatis/mapper/account.xml"/>
+        <mapper resource="./mybatis/mapper/panel.xml"/>
+        <mapper resource="./mybatis/mapper/collector.xml"/>
+        <mapper resource="./mybatis/mapper/panelHistory.xml"/>
+        <mapper resource="./mybatis/mapper/damage.xml"/>
+    </mappers>
+</configuration>

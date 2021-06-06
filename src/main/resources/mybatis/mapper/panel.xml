@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.wisoft.dao.PanelMapperDao">
+
+    <resultMap type="panel" id="panelResultMap">
+        <result column="panel_id"  property="panelId"/>
+        <result column="name" property="name"/>
+        <result column="location"    property="location"/>
+        <result column="panel_no" property="panelNo"/>
+        <result column="account_no" property="accountNo"/>
+    </resultMap>
+
+    <select id="selectPanels" resultMap="panelResultMap">
+        SELECT a.name
+             , location
+             , p.panel_no
+             , panel_id
+          FROM panel p, account a
+         WHERE p.panel_no = a.account_no
+         ORDER BY panel_no
+    </select>
+
+    <select id="selectPanelsWithAccountNo" parameterType="int" resultMap="panelResultMap">
+        SELECT account_no
+             , location
+             , panel_no
+             , panel_id
+          FROM panel
+         WHERE account_no = #{accountNo}
+    </select>
+
+    <select id="selectPanel" parameterType="Long" resultMap="panelResultMap">
+        SELECT panel_id
+             , panel_no
+             , location
+             , account_no
+          FROM panel
+         WHERE panel_no = #{paenlNo}
+    </select>
+
+    <insert id="insertPanel" parameterType="panel">
+        INSERT INTO panel(account_no, location, panel_id)
+        VALUES (#{accountNo}, #{location}, #{panelId})
+    </insert>
+
+    <update id="updatePanel" parameterType="panel">
+        UPDATE panel
+        SET  panel_id = #{panelId},
+        location = #{location},
+        account_no = #{accountNo}
+        WHERE panel_no = #{panelNo};
+    </update>
+
+    <delete id="deletePanel" parameterType="Long">
+        DELETE FROM panel
+        WHERE panel_no = #{paenlNo};
+    </delete>
+</mapper>
